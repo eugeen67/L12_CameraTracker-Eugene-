@@ -11,36 +11,42 @@
     <%- include('partial/navbar') %>
 
     <div class="container mt-4">
-        <h1>My Wishlist</h1>
-        <a href="/additem" class="btn btn-primary mb-3">Add New Item</a>
-        
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Brand</th>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Rating</th>    
-                </tr>
-            </thead>
-            <tbody>
-                <% for (let i = 0; i < wishlist.length; i++) { const item = wishlist[i]; %>
+        <h2>My Wishlist</h2>
+
+        <% if (items.length === 0) { %>
+            <p class="text-muted">Your wishlist is empty. Start adding some gear!</p>
+        <% } else { %>
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
                     <tr>
-                        <td><%= i + 1 %></td>
-                        <td><%= item.brand %></td>
-                        <td><%= item.name %></td>
-                        <td><%= item.category %></td>
-                        <td><%= item.rating %></td>
-                        <td>
-                            <a href="/edititem/<%= item.id %>" class="btn btn-sm btn-warning">Edit</a>
-                            <form action="/deleteitem/<%= item.id %>" method="POST" style="display:inline;">
-                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                            </form>
-                        </td>
+                        <th>#</th>
+                        <th>Brand</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Rating</th>
+                        <th>Actions</th>
                     </tr>
-                <% } %>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <% for (let i = 0; i < items.length; i++) { %>
+                        <tr>
+                            <td><%= i + 1 %></td>
+                            <td><%= items[i].brand %></td>
+                            <td><%= items[i].name %></td>
+                            <td><%= items[i].category %></td>
+                            <td><%= items[i].rating %></td>
+                            <td>
+                                <a href="/edit/<%= items[i].id %>" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <form action="/delete/<%= items[i].id %>" method="POST" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                                        onclick="return confirm('Delete this item?')">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        <% } %>
+    </div>
 </body>
 </html>

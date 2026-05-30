@@ -12,10 +12,10 @@
 
     <div class="container mt-4">
         <h1>Edit Item</h1>
-        <form action="/edit/<%= item._id %>" method="POST">
+        <form action="/edit/<%= item.id %>" method="POST">
             <div class="mb-3">
                 <label class="form-label">Brand</label>
-                <input type="text" name= "brand" value="<%= item.brand %>" required>
+                <input type="text" name="brand" class="form-control" value="<%= item.brand %>" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Name</label>
