@@ -15,12 +15,46 @@ const item = [
 let nextId = 5;
 
 app.get('/', (req, res) => {
-  res.render('index', { cameras: item });
+  res.render('index', { totalItems: item.length });
 });
 
 app.get('/wishlist', (req, res) => {
-  res.render('wishlist', { cameras: item });
+  res.render('wishlist', { item });
 });
+
+app.get('/additem', (req, res) => {
+  res.render('additem');
+});
+
+app.post('/additem', (req, res) => {
+    const { brand, name, category, rating } = req.body;
+    item.push({ id: nextId++, brand, name, category, rating: parseFloat(rating) });
+    res.redirect('/wishlist');
+});
+
+app.get('/edit/:id', (req, res) => {
+    const items = item.find(i => i.id === parseInt(req.params.id));
+    if (!items) return res.redirect('/wishlist');
+    res.render('edititem', { items });
+});
+
+app.post('/edit/:id', (req, res) => {
+    const items = item.find(i => i.id === parseInt(req.params.id));
+    if (items) {
+        const { brand, name, category, rating } = req.body;
+        items.brand = brand;
+        items.name = name;
+        items.category = category;
+        items.rating = parseFloat(rating);
+    }
+    res.redirect('/wishlist');
+});
+
+app.post('/delete/:id', (req, res) => {
+    const index = item.findIndex(i => i.id === parseInt(req.params.id));
+    if (index !== -1) {item.splice(index, 1);
+        res.redirect('/wishlist');
+    }});
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
